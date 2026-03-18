@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lemora — سیستم تکلیف</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--dark:#0a0806;--dark2:#141009;--dark3:#1e1810;--dark4:#261f14;
+  --cream:#f0e8d8;--text:#e2d9c8;--muted:rgba(226,217,200,0.45);
+  --border:rgba(201,168,76,0.12);--border2:rgba(201,168,76,0.28);
+  --green:#4ade80;--red:#f87171;--blue:#60a5fa;--orange:#fb923c;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;background:var(--dark);font-family:'Vazirmatn',sans-serif;color:var(--text);}
+
+.hdr{background:linear-gradient(135deg,var(--dark2),var(--dark3));border-bottom:1px solid var(--border2);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-left{display:flex;align-items:center;gap:11px;}
+.hdr img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.35);}
+.hdr-name{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);letter-spacing:2px;}
+.hdr-sub{font-size:10px;color:var(--muted);}
+
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 60px;}
+
+/* SCREENS */
+.scr{display:none;}.scr.a{display:block;animation:up 0.35s ease;}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME */
+.home-hero{text-align:center;padding:30px 0 24px;}
+.home-hero .ico{font-size:52px;margin-bottom:14px;}
+.home-hero h2{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);margin-bottom:6px;}
+.home-hero p{font-size:13px;color:var(--muted);line-height:2;}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+.role-card{background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:26px 14px;text-align:center;cursor:pointer;transition:all 0.3s;}
+.role-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.role-ico{font-size:36px;margin-bottom:10px;}
+.role-title{font-size:15px;font-weight:700;color:var(--cream);margin-bottom:4px;}
+.role-sub{font-size:11px;color:var(--muted);line-height:1.8;}
+
+/* CARDS */
+.card{background:var(--dark3);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;}
+.card-title{font-size:14px;font-weight:700;color:var(--cream);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+/* FIELDS */
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;}
+.field label .req{color:var(--gold);}
+.field input,.field select,.field textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Vazirmatn;font-size:13.5px;outline:none;transition:border-color 0.2s;direction:rtl;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--border2);}
+.field textarea{resize:vertical;min-height:90px;line-height:1.8;}
+.field select option{background:#1e1810;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* BUTTONS */
+.btn{padding:12px 22px;border-radius:12px;border:none;font-family:Vazirmatn;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.25s;display:inline-flex;align-items:center;gap:7px;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#8a6a20);color:#1a1008;}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,76,0.3);}
+.btn-full{width:100%;justify-content:center;}
+.btn-out{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-out:hover{border-color:var(--border2);color:var(--text);}
+.btn-green{background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:var(--green);}
+.btn-green:hover{background:rgba(74,222,128,0.25);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+/* LINK BOX */
+.link-box{background:var(--dark4);border:1px solid var(--border2);border-radius:14px;padding:18px;margin:16px 0;}
+.link-label{font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:10px;}
+.link-url{font-size:12px;color:var(--blue);word-break:break-all;direction:ltr;text-align:left;padding:10px;background:rgba(96,165,250,0.06);border-radius:8px;border:1px solid rgba(96,165,250,0.15);}
+.link-btns{display:flex;gap:8px;margin-top:12px;}
+.link-btn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:Vazirmatn;font-size:12px;cursor:pointer;transition:all 0.2s;}
+.link-btn:hover{border-color:var(--border2);color:var(--text);}
+.link-btn.wa{border-color:rgba(37,211,102,0.3);color:#25d366;background:rgba(37,211,102,0.06);}
+.link-btn.wa:hover{background:rgba(37,211,102,0.15);}
+
+/* STUDENT SOLVE */
+.motivate{background:linear-gradient(135deg,var(--dark3),var(--dark4));border:1px solid var(--border2);border-radius:16px;padding:20px;text-align:center;margin-bottom:18px;}
+.motivate .m-ico{font-size:36px;margin-bottom:10px;}
+.motivate .m-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);margin-bottom:6px;}
+.motivate .m-text{font-size:13px;color:var(--muted);line-height:2;}
+.motivate .m-quote{font-size:14px;color:var(--cream);font-style:italic;margin-top:8px;padding:10px;background:rgba(201,168,76,0.06);border-radius:10px;border-right:3px solid var(--gold);}
+
+/* RESULT */
+.result-box{border-radius:14px;padding:20px;text-align:center;margin:14px 0;}
+.score-big{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:600;line-height:1;}
+.score-lbl{font-size:12px;color:var(--muted);margin-top:5px;}
+.feedback-box{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:13.5px;line-height:2;color:var(--text);margin-top:11px;direction:rtl;text-align:right;}
+.correction-box{background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:12px;padding:14px;margin-top:9px;font-size:13px;line-height:2;direction:ltr;text-align:left;}
+.badge-box{display:inline-block;padding:8px 20px;border-radius:100px;font-size:13px;font-weight:700;margin-top:10px;}
+
+/* LOADING */
+.loading{display:flex;flex-direction:column;align-items:center;gap:11px;padding:28px;}
+.spin{width:36px;height:36px;border:3px solid rgba(201,168,76,0.2);border-top:3px solid var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-size:13px;color:var(--muted);line-height:2;text-align:center;}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.chip{padding:5px 13px;border-radius:100px;font-size:12px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:Vazirmatn;background:transparent;}
+.chip.sel{background:rgba(201,168,76,0.12);color:var(--gold);border-color:var(--gold);}
+
+/* TOAST */
+.toast-el{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#4ade80;color:#0a0806;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:700;z-index:999;font-family:Vazirmatn;white-space:nowrap;}
+
+/* ALERT */
+.alert{border-radius:12px;padding:12px 15px;font-size:12px;margin-bottom:13px;line-height:1.8;}
+.alert-info{background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);color:var(--blue);}
+.alert-ok{background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);color:var(--green);}
+
+@media(max-width:400px){.role-grid,.field-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#c9a84c,#8a6a20);display:flex;align-items:center;justify-content:center;font-family:Cormorant Garamond,serif;font-size:18px;font-weight:600;color:#0a0806;flex-shrink:0">L</div>
+    <div>
+      <div class="hdr-name">LEMORA</div>
+      <div class="hdr-sub">Smart Homework System</div>
+    </div>
+  </div>
+  <button class="btn btn-out" id="back-btn" style="display:none;padding:7px 14px;font-size:12px" onclick="goHome()">🏠 خانه</button>
+</div>
+
+<div class="wrap">
+
+<!-- HOME -->
+<div class="scr a" id="scr-home">
+  <div class="home-hero">
+    <div class="ico">🎓</div>
+    <h2>LEMORA</h2>
+    <p>سیستم تکلیف هوشمند<br>Smart Homework System</p>
+  </div>
+  <div class="role-grid">
+    <div class="role-card" onclick="show('scr-teacher');showBack()">
+      <div class="role-ico">👨‍🏫</div>
+      <div class="role-title">معلم</div>
+      <div class="role-sub">تکلیف بساز و لینک بفرست</div>
+    </div>
+    <div class="role-card" id="student-card" onclick="checkStudentMode()">
+      <div class="role-ico">📖</div>
+      <div class="role-title">شاگرد</div>
+      <div class="role-sub">لینک تکلیف از معلم بگیر</div>
+    </div>
+  </div>
+</div>
+
+<!-- TEACHER -->
+<div class="scr" id="scr-teacher">
+  <div class="card">
+    <div class="card-title">📝 ساختن تکلیف جدید</div>
+    <div class="alert alert-info">💡 بعد از ثبت تکلیف، یک لینک می‌گیرید. آن را به واتساپ شاگرد بفرستید!</div>
+
+    <div class="field">
+      <label><span class="req">*</span> نام شاگرد</label>
+      <input type="text" id="t-student" placeholder="نام کامل شاگرد">
+    </div>
+
+    <div class="field">
+      <label><span class="req">*</span> عنوان تکلیف</label>
+      <input type="text" id="t-title" placeholder="مثلاً: Present Simple Exercise">
+    </div>
+
+    <div class="field">
+      <label>نوع تکلیف</label>
+      <div class="chips">
+        <button class="chip sel" onclick="selChip(this,'Grammar')">📘 Grammar</button>
+        <button class="chip" onclick="selChip(this,'Writing')">✍️ Writing</button>
+        <button class="chip" onclick="selChip(this,'Vocabulary')">📖 Vocabulary</button>
+        <button class="chip" onclick="selChip(this,'Reading')">👁️ Reading</button>
+        <button class="chip" onclick="selChip(this,'Listening')">👂 Listening</button>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>سطح</label>
+        <select id="t-level">
+          <option>Beginner</option>
+          <option selected>Intermediate</option>
+          <option>Advanced</option>
+          <option>IELTS</option>
+          <option>Business</option>
+          <option>Kids</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>نمره کامل</label>
+        <select id="t-max">
+          <option>10</option>
+          <option>20</option>
+          <option selected>100</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="req">*</span> سوال تکلیف</label>
+      <textarea id="t-q" rows="4" placeholder="سوال یا دستورالعمل تکلیف را بنویسید...&#10;مثلاً: Fill in the blanks with the correct verb form..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>مهلت تسلیم</label>
+      <input type="date" id="t-dl">
+    </div>
+
+    <button class="btn btn-gold btn-full" onclick="createHW()">✅ بساز لینک تکلیف</button>
+  </div>
+
+  <!-- LINK RESULT -->
+  <div id="link-result" style="display:none">
+    <div class="link-box">
+      <div class="link-label">🔗 لینک تکلیف آماده است!</div>
+      <div class="link-url" id="hw-link-text"></div>
+      <div class="link-btns">
+        <button class="link-btn" onclick="copyLink()">📋 کپی لینک</button>
+        <button class="link-btn wa" onclick="sendWA()">💬 واتساپ</button>
+      </div>
+    </div>
+    <div class="alert alert-ok">✅ این لینک را به شاگرد بفرستید. شاگرد لینک را باز می‌کند، جواب می‌دهد و نمره فوری می‌گیرد!</div>
+    <button class="btn btn-gold btn-full" onclick="newHW()">➕ تکلیف جدید</button>
+  </div>
+</div>
+
+<!-- STUDENT SOLVE -->
+<div class="scr" id="scr-student">
+  <!-- Motivational Header -->
+  <div class="motivate" id="motivate-box">
+    <div class="m-ico" id="m-ico">🌟</div>
+    <div class="m-name" id="m-name"></div>
+    <div class="m-text">آماده حل تکلیف هستی؟ تو می‌توانی! 💪</div>
+    <div class="m-quote" id="m-quote"></div>
+  </div>
+
+  <!-- HW Info -->
+  <div class="card" id="hw-info-card">
+    <div class="card-title" id="s-title">📝 تکلیف</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px" id="s-badges"></div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:1px">📋 سوال / Question</div>
+      <div id="s-q" style="font-size:14px;line-height:2;direction:ltr;text-align:left;color:var(--cream)"></div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:7px">✍️ جواب شما / Your Answer</div>
+    <textarea id="s-ans" rows="5" placeholder="جواب خود را اینجا بنویسید...&#10;Write your answer here..." style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Vazirmatn;font-size:13.5px;outline:none;resize:vertical;direction:ltr;text-align:left;line-height:1.8;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--border2)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+
+    <div id="s-loading" style="display:none">
+      <div class="loading">
+        <div class="spin"></div>
+        <p>هوش مصنوعی جواب شما را بررسی می‌کند...<br>🤖 AI is checking your answer...</p>
+      </div>
+    </div>
+
+    <div id="s-result" style="display:none"></div>
+
+    <button class="btn btn-gold btn-full" id="s-submit" onclick="submitAns()" style="margin-top:14px">🚀 ارسال جواب</button>
+  </div>
+</div>
+
+<!-- NO HW -->
+<div class="scr" id="scr-nohw">
+  <div style="text-align:center;padding:50px 20px">
+    <div style="font-size:48px;margin-bottom:16px">📭</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:10px">تکلیفی یافت نشد</div>
+    <div style="font-size:13px;color:var(--muted);line-height:2">لینک تکلیف را از معلم خود بگیرید<br>و دوباره کوشش کنید</div>
+    <button class="btn btn-out" style="margin-top:20px" onclick="goHome()">🏠 برگشت</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const GROQ_KEY='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';
+const GROQ_URL='https://api.groq.com/openai/v1/chat/completions';
+const LOGO_B64='';
+
+let hwType='Grammar';
+let curHW=null;
+let hwLink='';
+
+// MOTIVATIONAL QUOTES
+const quotes=[
+  {en:"Every expert was once a beginner.",fa:"هر استاد یک‌بار مبتدی بوده است."},
+  {en:"Progress, not perfection.",fa:"پیشرفت مهم است، نه کمال."},
+  {en:"You are one step closer to your goal!",fa:"تو یک قدم به هدفت نزدیک‌تر شدی!"},
+  {en:"Keep going, you're doing great!",fa:"ادامه بده، عالی هستی!"},
+  {en:"Learning is a gift, even when pain is the teacher.",fa:"یادگیری هدیه‌ایست، حتی وقتی سختی معلم است."},
+  {en:"Small steps every day lead to big results.",fa:"قدم‌های کوچک هر روز به نتایج بزرگ می‌رسد."},
+  {en:"Believe in yourself and your English will improve!",fa:"به خودت ایمان داشته باش، انگلیسیت بهتر می‌شه!"},
+  {en:"Today's effort is tomorrow's achievement.",fa:"تلاش امروز، موفقیت فرداست."},
+  {en:"You are braver than you believe!",fa:"تو شجاع‌تر از آنی هستی که فکر می‌کنی!"},
+  {en:"Every answer you write makes you stronger.",fa:"هر جوابی که می‌نویسی تو را قوی‌تر می‌کند."}
+];
+
+const emojis=['🌟','💪','🎯','🔥','✨','🚀','🏆','💡','🎓','⭐'];
+
+window.onload=()=>{
+  const src='data:image/jpeg;base64,'+LOGO_B64;
+  document.getElementById('hdr-logo').src=src;
+  
+  // Set default deadline
+  const d=new Date();d.setDate(d.getDate()+7);
+  document.getElementById('t-dl').value=d.toISOString().split('T')[0];
+
+  // Check URL for homework data
+  const params=new URLSearchParams(window.location.search);
+  const hwData=params.get('hw');
+  if(hwData){
+    try{
+      curHW=JSON.parse(atob(hwData));
+      loadStudentView();
+    }catch(e){show('scr-nohw');}
+  }
+};
+
+function show(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('a'));
+  document.getElementById(id).classList.add('a');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showBack(){document.getElementById('back-btn').style.display='block';}
+function goHome(){show('scr-home');document.getElementById('back-btn').style.display='none';}
+
+function selChip(el,type){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');hwType=type;
+}
+
+function checkStudentMode(){
+  alert('برای حل تکلیف، لینک تکلیف را از معلم خود بگیرید و آن را باز کنید!');
+}
+
+function createHW(){
+  const student=document.getElementById('t-student').value.trim();
+  const title=document.getElementById('t-title').value.trim();
+  const q=document.getElementById('t-q').value.trim();
+  if(!student||!title||!q){alert('⚠️ لطفاً نام شاگرد، عنوان و سوال را پُر کنید!');return;}
+
+  const hw={
+    student,title,q,
+    type:hwType,
+    level:document.getElementById('t-level').value,
+    max:document.getElementById('t-max').value,
+    dl:document.getElementById('t-dl').value,
+    id:Date.now()
+  };
+
+  // Encode homework data in URL
+  const encoded=btoa(JSON.stringify(hw));
+  const baseUrl=window.location.href.split('?')[0];
+  hwLink=baseUrl+'?hw='+encoded;
+
+  document.getElementById('hw-link-text').textContent=hwLink;
+  document.getElementById('link-result').style.display='block';
+  window.scrollTo({top:400,behavior:'smooth'});
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(hwLink);
+  toast('لینک کپی شد! ✅');
+}
+
+function sendWA(){
+  const student=document.getElementById('t-student').value.trim();
+  const title=document.getElementById('t-title').value.trim();
+  const msg=`سلام ${student} جان! 👋\n\nتکلیف جدید برای شما آماده است:\n📝 ${title}\n\n🔗 لینک تکلیف:\n${hwLink}\n\nلطفاً لینک را باز کنید و جواب دهید. موفق باشید! 🌟\n\n— Lemora English Academy`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+function newHW(){
+  document.getElementById('t-student').value='';
+  document.getElementById('t-title').value='';
+  document.getElementById('t-q').value='';
+  document.getElementById('link-result').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// STUDENT VIEW
+function loadStudentView(){
+  show('scr-student');
+  document.getElementById('back-btn').style.display='none';
+
+  // Random quote and emoji
+  const q=quotes[Math.floor(Math.random()*quotes.length)];
+  const e=emojis[Math.floor(Math.random()*emojis.length)];
+  document.getElementById('m-ico').textContent=e;
+  document.getElementById('m-name').textContent='سلام '+curHW.student+' جان! 👋';
+  document.getElementById('m-quote').innerHTML=`"${q.fa}"<br><span style="font-size:12px;color:var(--muted);direction:ltr;display:block;margin-top:4px">"${q.en}"</span>`;
+
+  // HW info
+  document.getElementById('s-title').textContent='📝 '+curHW.title;
+  document.getElementById('s-badges').innerHTML=`
+    <span style="padding:3px 10px;border-radius:100px;font-size:11px;background:rgba(96,165,250,0.12);color:var(--blue);border:1px solid rgba(96,165,250,0.25)">${curHW.type}</span>
+    <span style="padding:3px 10px;border-radius:100px;font-size:11px;background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid var(--border2)">${curHW.level}</span>
+    <span style="padding:3px 10px;border-radius:100px;font-size:11px;background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border)">نمره: ${curHW.max}</span>
+    ${curHW.dl?`<span style="padding:3px 10px;border-radius:100px;font-size:11px;background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25)">📅 ${curHW.dl}</span>`:''}
+  `;
+  document.getElementById('s-q').textContent=curHW.q;
+}
+
+async function submitAns(){
+  const ans=document.getElementById('s-ans').value.trim();
+  if(!ans){alert('⚠️ لطفاً جواب خود را بنویسید!');return;}
+
+  document.getElementById('s-submit').disabled=true;
+  document.getElementById('s-loading').style.display='block';
+  document.getElementById('s-result').style.display='none';
+
+  const prompt=`You are an expert English teacher at Lemora English Academy. Grade this student's homework with care and encouragement.
+
+Student Name: ${curHW.student}
+Homework: ${curHW.title}
+Type: ${curHW.type}
+Level: ${curHW.level}
+Max Score: ${curHW.max}
+Question: ${curHW.q}
+Student Answer: ${ans}
+
+IMPORTANT: Respond ONLY in this exact JSON format (no other text, no markdown):
+{
+  "score": [number between 0 and ${curHW.max}],
+  "feedback_dari": "[3-4 warm sentences in DARI AFGHAN language ONLY. First praise what they did well, then gently mention mistakes, then encourage them strongly. Be like a supportive teacher, not harsh.]",
+  "correction": "[The corrected/improved version of the answer in English. If writing, show the better version.]",
+  "tip": "[One practical English learning tip related to this exercise, in English]"
+}`;
+
+  try{
+    const res=await fetch(GROQ_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+      body:JSON.stringify({
+        model:'llama-3.3-70b-versatile',
+        max_tokens:700,temperature:0.4,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data=await res.json();
+    const raw=data.choices?.[0]?.message?.content||'{}';
+    const clean=raw.replace(/```json|```/g,'').trim();
+    const r=JSON.parse(clean);
+
+    const score=Number(r.score)||0;
+    const pct=Math.round((score/curHW.max)*100);
+    const col=pct>=80?'var(--green)':pct>=60?'var(--gold)':pct>=40?'var(--orange)':'var(--red)';
+    const emoji=pct>=80?'🌟':pct>=60?'👍':pct>=40?'💪':'📚';
+    const msg=pct>=80?'عالی! Excellent! 🎉':pct>=60?'خوب! Good job! 👏':pct>=40?'قابل قبول! Keep it up! 💪':'تمرین بیشتر! Practice more! 📚';
+
+    // Random motivational ending
+    const mq=quotes[Math.floor(Math.random()*quotes.length)];
+
+    document.getElementById('s-loading').style.display='none';
+    document.getElementById('s-result').style.display='block';
+    document.getElementById('s-submit').style.display='none';
+    document.getElementById('s-result').innerHTML=`
+      <div class="result-box" style="background:rgba(255,255,255,0.03);border:1px solid ${col}40">
+        <div style="font-size:44px">${emoji}</div>
+        <div class="score-big" style="color:${col}">${score}<span style="font-size:22px;opacity:0.5">/${curHW.max}</span></div>
+        <div class="score-lbl">${pct}%</div>
+        <div class="badge-box" style="background:${col}20;border:1px solid ${col}50;color:${col};margin-top:10px">${msg}</div>
+      </div>
+
+      <div class="feedback-box">
+        <div style="font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">💬 بازخورد معلم</div>
+        ${r.feedback_dari||''}
+      </div>
+
+      ${r.correction?`<div class="correction-box">
+        <div style="font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:8px">✅ Corrected Version</div>
+        ${r.correction}
+      </div>`:''}
+
+      ${r.tip?`<div style="background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.15);border-radius:12px;padding:13px;margin-top:10px;direction:ltr;text-align:left">
+        <div style="font-size:10px;color:var(--blue);letter-spacing:2px;margin-bottom:6px">💡 Teacher's Tip</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.8">${r.tip}</div>
+      </div>`:''}
+
+      <div style="background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:12px;text-align:center">
+        <div style="font-size:20px;margin-bottom:6px">🎓</div>
+        <div style="font-size:12px;color:var(--muted);line-height:2;font-style:italic">"${mq.fa}"<br><span style="direction:ltr;display:block">"${mq.en}"</span></div>
+        <div style="font-size:11px;color:var(--gold);margin-top:8px;letter-spacing:1px">— Lemora English Academy</div>
+      </div>
+    `;
+    window.scrollTo({top:300,behavior:'smooth'});
+
+  }catch(e){
+    document.getElementById('s-loading').style.display='none';
+    document.getElementById('s-submit').disabled=false;
+    alert('⚠️ مشکل در اتصال. دوباره کوشش کنید.');
+  }
+}
+
+function toast(msg){
+  const t=document.createElement('div');
+  t.className='toast-el';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2200);
+}
+</script>
+</body>
+</html>
